@@ -1,0 +1,96 @@
+body, html, main, #home{
+    height: 100%;
+}
+
+/* The hero image */
+.hero-image {
+  background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url("../images/beerparty.png");
+  height: 50%;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  position: relative;
+}
+
+/* Place text in the middle of the image */
+.hero-text {
+  text-align: center;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background:linear-gradient(90deg, rgba(255,248,151,1) 0%, rgba(250,233,111,1) 20%, rgba(246,193,1,1) 40%, rgba(223,141,3,1) 56%, rgba(236,157,0,1) 80%, rgba(201,110,18,1) 100%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+}
+
+.is-invisible{
+    display:none;
+}
+
+.is-visible{
+    display:block;
+}
+
+.light-dark-button{
+    color:black ;
+    background-clip: none;
+    -webkit-background-clip: none;
+    -webkit-text-fill-color: black;
+}
+
+
+
+#beerglass{
+    z-index: 5;
+}
+
+#coaster{
+    position: absolute;
+    left:450px;
+    top: 200px;
+    z-index: 4;  
+}
+
+#beerglass, #coaster{
+    width: 75px;
+}
+
+[id$="Bubble"]{
+    border-radius: 50%;
+    position:absolute;
+    
+}
+#innerBubble{
+    left: 65px;
+    top: 65px;
+    height:125px;
+    width:125px;
+    border:2px solid blue;
+
+}
+
+#middleBubble{
+    left: 125px;
+    top: 125px;
+    height:250px;
+    width:250px;  
+    border:2px solid red;
+
+}
+
+#outerBubble{
+    left: 0px;
+    top: 200px;
+    height:500px;
+    width:500px;
+    border:2px solid green;
+    
+}
+
+
+form{
+    width:50%
+}
