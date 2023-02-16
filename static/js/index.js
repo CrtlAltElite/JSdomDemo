@@ -186,25 +186,30 @@ function handleBeer(){
 // (note this method works only for absolute positions assigned with inline css)
 
 function handleBeerEvent(event){
+    const arrowKeys = ['ArrowRight', 'ArrowLeft', 'ArrowUp', 'ArrowDown'];
+    console.log(event.key)
+    if (arrowKeys.includes(event.key)){
         let glass=document.querySelector("#beerglass")
-        console.log(event.key)
         switch(event.key){
             case "ArrowRight":
-                glass.style.left = parseInt(glass.style.left.substring(0,glass.style.left.length-2))+1+"px"
+                glass.style.left = parseInt(glass.style.left.substring(0,glass.style.left.length-2))+5+"px"
                 break;
             case "ArrowLeft":
-                glass.style.left = parseInt(glass.style.left.substring(0,glass.style.left.length-2))-1+"px"
+                glass.style.left = parseInt(glass.style.left.substring(0,glass.style.left.length-2))-5+"px"
                 break;
             case "ArrowUp":
-                glass.style.top = parseInt(glass.style.top.substring(0,glass.style.top.length-2))-1+"px"
+                glass.style.top = parseInt(glass.style.top.substring(0,glass.style.top.length-2))-5+"px"
                 break;
             case "ArrowDown":
-                glass.style.top = parseInt(glass.style.top.substring(0,glass.style.top.length-2))+1+"px"
+                glass.style.top = parseInt(glass.style.top.substring(0,glass.style.top.length-2))+5+"px"
                 break;
         }
         if (glass.style.top === "200px" && glass.style.left === "450px"){
-            alert("Enjoy your mug")
+            setTimeout(()=>{
+                alert("Enjoy your mug")
+            })
         }
+    }
 }
 
 // Turn on key listening for beer movement
