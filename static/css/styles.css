@@ -1,5 +1,5 @@
-body, html, main, #home{
-    height: 100%;
+body{
+    min-height: 100vh;
 }
 
 /* The hero image */
@@ -64,30 +64,29 @@ body, html, main, #home{
     
 }
 #innerBubble{
-    left: 65px;
-    top: 65px;
-    height:125px;
-    width:125px;
+    left: 15vh;
+    top: 15vh;
+    height:20vh;
+    width: 20vh;
     border:2px solid blue;
-
 }
 
 #middleBubble{
-    left: 125px;
-    top: 125px;
-    height:250px;
-    width:250px;  
+    left: 15vh;
+    top: 15vh;
+    height:50vh;
+    width:50vh;  
     border:2px solid red;
 
 }
 
 #outerBubble{
-    left: 0px;
-    top: 200px;
-    height:500px;
-    width:500px;
+    margin-top: 5vw;
+    margin-left: 15vh;
+    height: 80vh;
+    width: 80vh;
     border:2px solid green;
-    
+    position: relative;
 }
 
 
