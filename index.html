@@ -48,13 +48,26 @@
             </div>
         </div>
         <div class="is-invisible" id="grab">
-                <img id="beerglass" style="position: absolute; left:50px; top: 200px;" src="./static/images/beer.png">
-                <img id="coaster" src="./static/images/coaster.png">
+          <div class="h-300">
+            <img class="beerglass" style="position: absolute; left:50px; top: 200px;" src="./static/images/beer.png">
+            <img id="coaster" src="./static/images/coaster.png">
+          </div>
+
+          <div class="row m-0">
+            <div class="col-2 offset-1" >
+              <img class="beerglass" id="draggable" src="./static/images/beer.png">
+            </div>
+            <div class="col-2 offset-2" id="droppable">
+            </div>
+          </div>
+
         </div>
         <div class="is-invisible" id="find-brews">
             <form>
-                <input class="form-control" name="city" placeholder="City">
-                <button id="find-brews-input" class="form-control btn btn-primary">Find Breweries</button>
+              <div class="m-4 w-50">
+                <input class="form-control m-3" name="city" placeholder="City">
+                <button id="find-brews-input" class="form-control btn btn-primary m-3">Find Breweries</button>
+              </div>    
             </form>
             <table id="brewery-table">
             </table>

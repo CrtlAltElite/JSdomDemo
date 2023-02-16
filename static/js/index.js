@@ -1,3 +1,4 @@
+// Load in our js functions
 pageLoader()
 
 function pageLoader(){
@@ -21,7 +22,9 @@ function pageLoader(){
     for (let btn of colorButtons){
         btn.addEventListener('click', e=>changeBackgroundColor(e))
     }
-    
+
+    //load drag an drop listeners
+    loadDragNDropBeer()
 }
 
 // To Make the Page a Single Page App We Will swap visible divs on navlink clicks
@@ -29,7 +32,7 @@ function changeDiv(e){
     let toTurnOff=document.getElementsByClassName("is-visible")
 
     for (let element of toTurnOff){
-            console.log("turn off", element )
+            console.log("turning off", element )
             element.classList.replace("is-visible","is-invisible")
             let navlink=document.getElementsByName(element.id)[0]
             navlink.classList.remove("active")
@@ -79,27 +82,43 @@ function findBreweries(event, page){
                 .catch(error=>console.error(error))
 }
 
-// Callback function for FindBreweries that will write the information to the screen
-function displayBreweries(event, data, page){
-    console.log(data, page)
+// Function to add a cell of data to a row (appending td to a tr)
+function newDataCell(tr, value){
+    td=document.createElement("td")
+    td.innerText=value ?? '-'
+    tr.appendChild(td)
+}
 
-    let table = document.getElementById("brewery-table")
+//Clears out the brewery table to remove any previous searches/pages
+function clearBrewTable(table){
     table.innerHTML=""
     let buttonsToClear=document.querySelectorAll(".prev-next-btn")
-    console.log('toclear', buttonsToClear)
     for (let btn of buttonsToClear){
         console.log("removing... ", btn)
         btn.remove()
     }
+    return table
+}
 
+// Callback function for FindBreweries that will write the information to the screen
+function displayBreweries(event, data, page){
+    
+    //Remove all the old results from the table
+    let table = document.getElementById("brewery-table")
+    table = clearBrewTable(table)
+    
+    //When we done have results we want to give feedback
     if (Object.keys(data).length<=0){
         table.innerHTML="No More Breweries"
         return   
     }
+
+    // Create the Brewery Table Headers 
     let thead = document.createElement("thead")
     table.append(thead)
     let tr=document.createElement("tr")
     thead.appendChild(tr)
+    
     const tableHeadings=["Name", "Type", "Street Address", "Address 2", "Address 3", "City", "State"]
     let th
     for (let heading of tableHeadings){
@@ -109,13 +128,17 @@ function displayBreweries(event, data, page){
         tr.appendChild(th)
     }
 
+    // Write the information for each brewery to the table
     for (brewery of data){
         tr=document.createElement("tr")
         table.appendChild(tr)
 
         let td=document.createElement("td")
         td.innerHTML=`<a href=${brewery.website_url}>${brewery.name}</a>`
-        // This will change the copy paste behavoir when copying the name of the brewery, it will now also include the website
+        
+        // This will change the copy paste behavoir when 
+        // copying the name of the brewery, it will now also 
+        // include the website
         let copyString= `Visit ${brewery.name} at ${brewery.website_url}`
         td.addEventListener('copy', (event)=> {
             const selection = document.getSelection();
@@ -124,30 +147,12 @@ function displayBreweries(event, data, page){
             }
         )
         tr.appendChild(td)
-
-        td=document.createElement("td")
-        td.innerText=brewery.brewery_type
-        tr.appendChild(td)
-
-        td=document.createElement("td")
-        td.innerText=brewery.street
-        tr.appendChild(td)
-
-        td=document.createElement("td")
-        td.innerText=brewery.address_2 ?? " - "
-        tr.appendChild(td)
-        
-        td=document.createElement("td")
-        td.innerText=brewery.address_3 ?? " - "
-        tr.appendChild(td)
-
-        td=document.createElement("td")
-        td.innerText=brewery.city
-        tr.appendChild(td)
-
-        td=document.createElement("td")
-        td.innerText=brewery.state
-        tr.appendChild(td)
+        newDataCell(tr, brewery.brewery_type)
+        newDataCell(tr, brewery.street)
+        newDataCell(tr, brewery.address_2)
+        newDataCell(tr, brewery.address_3)
+        newDataCell(tr, brewery.city)
+        newDataCell(tr, brewery.state)
     }
     // If there is no data there should not be a next button
     if (Object.keys(data).length>=0){
@@ -169,9 +174,6 @@ function displayBreweries(event, data, page){
 }
 
 
-
-
-
 // The switch to start listening to keypresses to move beer glass
 function handleBeer(){
     let checkToStartBeerMove=document.getElementsByClassName("is-visible")[0]
@@ -183,13 +185,16 @@ function handleBeer(){
 }
 
 // Move the glass with the key strokes by changing the absolute position 
-// (note this method works only for absolute positions assigned with inline css)
+// (note this method works only for absolute positions
+// assigned with inline css)
 
 function handleBeerEvent(event){
     const arrowKeys = ['ArrowRight', 'ArrowLeft', 'ArrowUp', 'ArrowDown'];
     console.log(event.key)
+    // If the user presses one of our trigger keys 
+    // we will move the glass 5 pixels in that direction
     if (arrowKeys.includes(event.key)){
-        let glass=document.querySelector("#beerglass")
+        let glass=document.querySelector(".beerglass")
         switch(event.key){
             case "ArrowRight":
                 glass.style.left = parseInt(glass.style.left.substring(0,glass.style.left.length-2))+5+"px"
@@ -222,4 +227,36 @@ function startBeerMove(){
 function endBeerMove(){
     console.log("no longer listening for events")
     document.removeEventListener('keydown', handleBeerEvent)
+}
+
+// load event listeners for drag and drop
+function loadDragNDropBeer(){
+    let draggable=document.getElementsByClassName("beerglass")[1]
+    let droppable=document.getElementById("droppable")
+    droppable.addEventListener('drop',(e)=>drop(e))
+    droppable.addEventListener('dragover', (e)=>allowDrop(e))
+    draggable.addEventListener('dragstart', (e)=>drag(e))
+    draggable.draggable=true
+}
+
+//stop the default behavior for dragover to allow our dropping
+function allowDrop(e) {
+    console.log('allowDrop')
+    e.preventDefault()
+}
+
+//use the events datatransfer to hold the beer glass while dragging
+function drag(e) {
+    console.log('drag')
+    e.dataTransfer.setData("text", e.target.id)
+}
+
+//add the beer to the coaster div
+function drop(e) {
+    console.log('drop')
+
+    e.preventDefault()
+    var data = e.dataTransfer.getData("text")
+    console.log(data)
+    e.target.appendChild(document.getElementById(data))
 }
